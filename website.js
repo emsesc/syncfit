@@ -7,20 +7,27 @@ var app = express();
 var router = express.Router();
 require('dotenv').config();
 
+var userInfo = ""
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname);
 app.use(cookieParser());
 app.use(session({ secret: 'keyboard cat' }));
   
-var path = __dirname + '/';
+var path = __dirname;
   
 app.use('/', router);
-app.use('/assets', express.static(path + 'assets'))
+app.use('/assets', express.static(path + '/assets'))
   
 router.get('/',function(req, res){
-  res.sendFile(path + 'index.html');
+  res.sendFile(path + '/index.html');
 });
 
 router.get('/getstarted', function(req, res){
-  res.sendFile(path + 'download.html')
+  console.log("Requesting...")
+  res.render('download', {
+    welcomeText: userInfo.profile.displayName
+  })
 });
 
 app.use(passport.initialize());
@@ -67,6 +74,8 @@ app.get( '/auth/fitbit/callback', passport.authenticate( 'fitbit', {
 
 app.get('/auth/fitbit/success', function(req, res, next) {
   // res.send(req.user);
+  userInfo = req.user
+  console.log(userInfo)
   res.redirect('/getstarted')
 });
   
