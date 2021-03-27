@@ -87,9 +87,10 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-app.get('/startdownload', function(req, res){
+app.get('/startdownload', async (req, res) => {
   res.redirect('/getstarted')
-  functions.getFiles(userInfo.accessToken)
+  let links = await functions.getFiles(userInfo.accessToken)
+  // let status = await functions.downAndUp(links)
 })
 
 app.listen(3000,function(){
