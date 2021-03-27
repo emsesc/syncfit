@@ -56,8 +56,8 @@ async function makeCall(links, accessToken, date) {
 }
 
 const downAndUp = async (links, accessToken) => {
-    // for (var i = 0; i < links.length; i++) {
-        let resdata = await fetch(links[0], {
+    for (var i = 0; i < links.length; i++) {
+        let resdata = await fetch(links[i], {
             method: "GET",
             headers: {
               "Authorization": `Bearer ${accessToken}`
@@ -66,9 +66,11 @@ const downAndUp = async (links, accessToken) => {
         
         let responseData = await resdata.text()
 
-        fileName = links[0].slice(links[0].length - 15)
+        fileName = links[i].slice(links[i].length - 15)
         uploadFile(fileName, Buffer.from(responseData))
-    // }
+    }
+    // upload this file to let us know that everything is complete
+    uploadFile("completed.txt", Buffer.from("Upload complete"))
 }
 
 const uploadFile = (fileName, fileContent) => {
@@ -113,7 +115,7 @@ const listFiles = async() => {
         Bucket : BUCKET_NAME,
     };
 
-    let files = await s3.listObjects(params ).promise();
+    let files = await s3.listObjects(params).promise();
 
     let result = await files.Contents
     for (var i = 0; i < result.length; i++) {

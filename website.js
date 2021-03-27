@@ -116,12 +116,12 @@ app.get('/downloadnow', async (req, res) => {
     let filesArray = await functions.listFiles()
     console.log("We got: " + filesArray)
 
-    const output = fs.createWriteStream(__dirname + '/tcx-data.zip')
+    const output = fs.createWriteStream(__dirname + `/${userInfo.profile.displayName}-tcx-data.zip`)
     await s3Zip
       .archive({ s3: s3, bucket: BUCKET_NAME, debug: true }, '', filesArray)
       .pipe(output)
 
-    res.download(__dirname + '/tcx-data.zip')
+    res.download(__dirname + `/${userInfo.profile.displayName}-tcx-data.zip`)
   } else {
     res.render('download', {
       welcomeText: `${userInfo.profile.displayName}, download is not ready`,
