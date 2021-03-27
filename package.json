@@ -18,6 +18,8 @@
     "node-fetch": "^2.6.1",
     "passport": "^0.4.1",
     "passport-fitbit-oauth2": "^1.0.2",
+    "s3-list-all-objects": "^0.1.0",
+    "s3-zip": "^3.2.0",
     "session": "^0.1.0"
   }
 }

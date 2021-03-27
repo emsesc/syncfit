@@ -1,6 +1,7 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
+var s3Zip = require('s3-zip');
 var FitbitStrategy = require( 'passport-fitbit-oauth2' ).FitbitOAuth2Strategy;
 var passport = require('passport')
 var app = express();
@@ -100,17 +101,30 @@ app.get('/downloadnow', async (req, res) => {
       welcomeText: `${userInfo.profile.displayName}, download is ready`,
       avatar: userInfo.profile._json.user.avatar
     })
+
+    let filesArray = await functions.listFiles()
+    console.log("We got: " + filesArray)
+  // zip(filesArray)
+
+  // function zip(files) {
+  //   console.log(files)
+  //   const output = fs.createWriteStream(join(__dirname, 'tcxfiles.zip'))
+  //   s3Zip
+  //     .archive({ region: region, bucket: bucket, preserveFolderStructure: true }, folder, files)
+  //     .pipe(res)
+  //   }
+
+    // s3Zip
+    //   .archive({ region: region, bucket: bucket }, '', 'abc.jpg')
+    //   .pipe(res)
   } else {
     res.render('download', {
       welcomeText: `${userInfo.profile.displayName}, download is not ready`,
       avatar: userInfo.profile._json.user.avatar
     })
   }
-  // s3Zip
-  //   .archive({ region: region, bucket: bucket }, '', 'abc.jpg')
-  //   .pipe(res)
 })
 
-app.listen(3000,function(){
+app.listen(3000, function(){
   console.log('Server running at Port 3000');
 });
