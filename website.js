@@ -90,7 +90,11 @@ app.get('/logout', function(req, res){
 app.get('/startdownload', async (req, res) => {
   res.redirect('/getstarted')
   let links = await functions.getFiles(userInfo.accessToken)
-  // let status = await functions.downAndUp(links)
+  let status = await functions.downAndUp(links, userInfo.accessToken)
+})
+
+app.post('/downloadready', function(req, res){
+  let redir_link = req.body;
 })
 
 app.listen(3000,function(){

@@ -1,17 +1,21 @@
-const fetch = require('node-fetch')
+const fetch = require('node-fetch');
+const AWS = require('aws-sdk');
+
 
 const getFiles = async (accessToken) => {
+    // use accessToken to get all download links
     let links = [];
     let dates = ['2020-10-27', '2021-02-08']
 
     let append1 = await makeCall(links, accessToken, dates[0])
     let final = await makeCall(append1, accessToken, dates[1])
 
-    console.log(links)
-    return links
+    console.log(final)
+    return final
 }
 
 async function makeCall(links, accessToken, date) {
+    // call Fitbit API to get links and all activities
     let params = new URLSearchParams({
         'afterDate': date,
         'sort': 'asc',
@@ -29,7 +33,7 @@ async function makeCall(links, accessToken, date) {
       })
     
     let responseData = await resdata.json()
-    console.log(responseData)
+    // console.log(responseData)
     console.log(responseData.activities.length)
     for (var i = 0; i < responseData.activities.length; i++) {
         if (responseData.activities[i].distance > 2.4) {
@@ -42,9 +46,47 @@ async function makeCall(links, accessToken, date) {
     return links
 }
 
-// const downAndUp = async (links) => {
+const downAndUp = async (links, accessToken) => {
+    // for (var i = 0; i < links.length; i++) {
+        let resdata = await fetch(links[0], {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${accessToken}`
+            }
+          })
+        
+        let responseData = await resdata.text()
 
-// }
+        fileName = links[0].slice(links[0].length - 15)
+        uploadFile(fileName, Buffer.from(responseData))
+    // }
+}
+
+const uploadFile = (fileName, fileContent) => {
+    const ID = process.env.S3_ID;
+    const SECRET = process.env.S3_SECRET;
+    const BUCKET_NAME = 'syncfittcxfiles';
+
+    const s3 = new AWS.S3({
+        accessKeyId: ID,
+        secretAccessKey: SECRET
+    });
+
+    // Setting up S3 upload parameters
+    const params = {
+        Bucket: BUCKET_NAME,
+        Key: fileName, // File name you want to save as in S3
+        Body: fileContent
+    };
+
+    // Uploading files to the bucket
+    s3.upload(params, function(err, data) {
+        if (err) {
+            throw err;
+        }
+        console.log(`File uploaded successfully. ${data.Location}`);
+    });
+};
 
 exports.getFiles = getFiles
-// exports.downAndUp = downAndUp
+exports.downAndUp = downAndUp
