@@ -93,8 +93,22 @@ app.get('/startdownload', async (req, res) => {
   let status = await functions.downAndUp(links, userInfo.accessToken)
 })
 
-app.post('/downloadready', function(req, res){
-  let redir_link = req.body;
+app.get('/downloadnow', async (req, res) => {
+  let status = await functions.checkDownload()
+  if (status == true) {
+    res.render('download', {
+      welcomeText: `${userInfo.profile.displayName}, download is ready`,
+      avatar: userInfo.profile._json.user.avatar
+    })
+  } else {
+    res.render('download', {
+      welcomeText: `${userInfo.profile.displayName}, download is not ready`,
+      avatar: userInfo.profile._json.user.avatar
+    })
+  }
+  // s3Zip
+  //   .archive({ region: region, bucket: bucket }, '', 'abc.jpg')
+  //   .pipe(res)
 })
 
 app.listen(3000,function(){

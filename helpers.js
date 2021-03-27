@@ -1,5 +1,14 @@
+require('dotenv').config();
 const fetch = require('node-fetch');
 const AWS = require('aws-sdk');
+const ID = process.env.S3_ID;
+const SECRET = process.env.S3_SECRET;
+const BUCKET_NAME = 'syncfit-test-bucket';
+
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET
+});
 
 
 const getFiles = async (accessToken) => {
@@ -63,15 +72,6 @@ const downAndUp = async (links, accessToken) => {
 }
 
 const uploadFile = (fileName, fileContent) => {
-    const ID = process.env.S3_ID;
-    const SECRET = process.env.S3_SECRET;
-    const BUCKET_NAME = 'syncfittcxfiles';
-
-    const s3 = new AWS.S3({
-        accessKeyId: ID,
-        secretAccessKey: SECRET
-    });
-
     // Setting up S3 upload parameters
     const params = {
         Bucket: BUCKET_NAME,
@@ -88,5 +88,24 @@ const uploadFile = (fileName, fileContent) => {
     });
 };
 
+const checkDownload = async () => {
+    let status = true
+    var params = {
+        Bucket: BUCKET_NAME, /* required */
+        Key: "completed.txt"
+    };
+
+    console.log("Requesting for completed.txt")
+    try {
+        await s3.getObject(params).promise();
+    } catch (e) {
+        status = false;
+    }
+
+    console.log(status)
+    return status
+}
+
 exports.getFiles = getFiles
 exports.downAndUp = downAndUp
+exports.checkDownload = checkDownload
