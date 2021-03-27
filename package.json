@@ -1,0 +1,14 @@
+{
+  "name": "syncfit",
+  "version": "1.0.0",
+  "description": "Bulk download GPS and heartrate data",
+  "main": "website.js",
+  "scripts": {
+    "start": "node website.js"
+  },
+  "author": "emsesc",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
