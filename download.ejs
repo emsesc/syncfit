@@ -46,9 +46,9 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-          <li><a class="nav-link scrollto" href="#about">About</a></li>
-          <li><a class="nav-link scrollto" href="#services">Services</a></li>
+          <li><a class="nav-link scrollto active" href="#hero">Profile</a></li>
+          <li><a class="nav-link scrollto" href="#about">Stats</a></li>
+          <li><a class="nav-link scrollto" href="#services">Badges</a></li>
           <li><a class="getstarted scrollto" href="http://localhost:3000/logout">Sign Out</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -65,10 +65,10 @@
         <div class="col-xl-5 col-lg-6 pt-3 pt-lg-0 order-2 order-lg-1 d-flex flex-column justify-content-center">
           <h1>Welcome <%= welcomeText %>!</h1>
           <h2>Save time and quickly download FitBit GPS and heartrate data to upload your workouts to your favorite fitness tracking app.</h2>
-          <div><a href="http://localhost:3000/auth/fitbit" class="btn-get-started scrollto">Get Started</a></div>
+          <div><a href="http://localhost:3000/startdownload" class="btn-get-started scrollto">Start Your Download</a></div>
         </div>
         <div class="col-xl-4 col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-in" data-aos-delay="150">
-          <img src="assets/img/hero-img.png" class="img-fluid animated" alt="">
+          <img src=<%= avatar %> class="img-fluid animated" alt="">
         </div>
       </div>
     </div>

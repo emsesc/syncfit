@@ -5,6 +5,7 @@ var FitbitStrategy = require( 'passport-fitbit-oauth2' ).FitbitOAuth2Strategy;
 var passport = require('passport')
 var app = express();
 var router = express.Router();
+var functions = require('./helpers.js')
 require('dotenv').config();
 
 var userInfo = ""
@@ -26,7 +27,8 @@ router.get('/',function(req, res){
 router.get('/getstarted', function(req, res){
   console.log("Requesting...")
   res.render('download', {
-    welcomeText: userInfo.profile.displayName
+    welcomeText: userInfo.profile.displayName,
+    avatar: userInfo.profile._json.user.avatar
   })
 });
 
@@ -75,7 +77,8 @@ app.get( '/auth/fitbit/callback', passport.authenticate( 'fitbit', {
 app.get('/auth/fitbit/success', function(req, res, next) {
   // res.send(req.user);
   userInfo = req.user
-  console.log(userInfo)
+  // console.log(userInfo)
+  // console.log(JSON.stringify(userInfo.profile._json))
   res.redirect('/getstarted')
 });
   
@@ -83,6 +86,11 @@ app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
 });
+
+app.get('/startdownload', function(req, res){
+  res.redirect('/getstarted')
+  functions.getFiles(userInfo.accessToken)
+})
 
 app.listen(3000,function(){
   console.log('Server running at Port 3000');
