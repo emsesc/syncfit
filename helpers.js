@@ -113,23 +113,10 @@ const listFiles = async() => {
         Bucket : BUCKET_NAME,
     };
 
-    let files = await s3.listObjects(params 
-        // function(err, data) {
-        // // if (err) {
-        // //   console.log("Error", err);
-        // // } else {
-        // //     console.log("Success", data);
-        // //     result = data.Contents
-
-        // //     console.log("Result: " + result)
-        // //     getKeys(result)
-        // // }
-    ).promise();
+    let files = await s3.listObjects(params ).promise();
 
     let result = await files.Contents
-    console.log(result)
     for (var i = 0; i < result.length; i++) {
-        console.log(result[i])
         filesArray.push(result[i].Key)
     }
 

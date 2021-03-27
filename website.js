@@ -7,7 +7,18 @@ var passport = require('passport')
 var app = express();
 var router = express.Router();
 var functions = require('./helpers.js')
+var fs = require('file-system')
 require('dotenv').config();
+
+const AWS = require('aws-sdk');
+const ID = process.env.S3_ID;
+const SECRET = process.env.S3_SECRET;
+const BUCKET_NAME = 'syncfit-test-bucket';
+
+const s3 = new AWS.S3({
+    accessKeyId: ID,
+    secretAccessKey: SECRET
+});
 
 var userInfo = ""
 
@@ -97,26 +108,20 @@ app.get('/startdownload', async (req, res) => {
 app.get('/downloadnow', async (req, res) => {
   let status = await functions.checkDownload()
   if (status == true) {
-    res.render('download', {
-      welcomeText: `${userInfo.profile.displayName}, download is ready`,
-      avatar: userInfo.profile._json.user.avatar
-    })
+    // res.render('download', {
+    //   welcomeText: `${userInfo.profile.displayName}, download is ready`,
+    //   avatar: userInfo.profile._json.user.avatar
+    // })
 
     let filesArray = await functions.listFiles()
     console.log("We got: " + filesArray)
-  // zip(filesArray)
 
-  // function zip(files) {
-  //   console.log(files)
-  //   const output = fs.createWriteStream(join(__dirname, 'tcxfiles.zip'))
-  //   s3Zip
-  //     .archive({ region: region, bucket: bucket, preserveFolderStructure: true }, folder, files)
-  //     .pipe(res)
-  //   }
+    const output = fs.createWriteStream(__dirname + '/tcx-data.zip')
+    await s3Zip
+      .archive({ s3: s3, bucket: BUCKET_NAME, debug: true }, '', filesArray)
+      .pipe(output)
 
-    // s3Zip
-    //   .archive({ region: region, bucket: bucket }, '', 'abc.jpg')
-    //   .pipe(res)
+    res.download(__dirname + '/tcx-data.zip')
   } else {
     res.render('download', {
       welcomeText: `${userInfo.profile.displayName}, download is not ready`,
