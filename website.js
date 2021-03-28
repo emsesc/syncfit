@@ -121,7 +121,10 @@ app.get('/downloadnow', async (req, res) => {
       .archive({ s3: s3, bucket: BUCKET_NAME, debug: true }, '', filesArray)
       .pipe(output)
 
-    res.download(__dirname + `/${userInfo.profile.displayName}-tcx-data.zip`)
+    output.on('finish', function() {
+      res.download(__dirname + `/${userInfo.profile.displayName}-tcx-data.zip`)
+    });
+    // wait till file is done 
   } else {
     res.render('download', {
       welcomeText: `${userInfo.profile.displayName}, download is not ready`,
