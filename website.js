@@ -41,7 +41,7 @@ router.get('/getstarted', function(req, res){
   res.render('download', {
     welcomeText: userInfo.profile.displayName,
     avatar: userInfo.profile._json.user.avatar640,
-    link: "http://localhost:3000/startdownload",
+    link: "/startdownload",
     btnText: "Start Download"
   })
 });
@@ -51,7 +51,7 @@ router.get('/checkstatus', function(req, res){
   res.render('download', {
     welcomeText: userInfo.profile.displayName,
     avatar: "https://i.pinimg.com/originals/6b/67/cb/6b67cb8a166c0571c1290f205c513321.gif",
-    link: "http://localhost:3000/downloadnow",
+    link: "/downloadnow",
     btnText: "Check Status and Download!"
   })
 });
@@ -141,7 +141,7 @@ app.get('/downloadnow', async (req, res) => {
     res.render('download', {
       welcomeText: `${userInfo.profile.displayName}, download is not ready`,
       avatar: "https://i.pinimg.com/originals/6b/67/cb/6b67cb8a166c0571c1290f205c513321.gif",
-      link: "http://localhost:3000/downloadnow",
+      link: "/downloadnow",
       btnText: "Check Status and Download!"
     })
   }
