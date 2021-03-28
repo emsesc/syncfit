@@ -112,9 +112,9 @@ app.get('/logout', function(req, res){
 });
 
 app.get('/startdownload', async (req, res) => {
+  res.redirect('/checkstatus')
   let links = await functions.getFiles(userInfo.accessToken)
   await functions.downAndUp(links, userInfo.accessToken)
-  res.redirect('/uploadstatus')
 })
 
 app.get('/downloadnow', async (req, res) => {
