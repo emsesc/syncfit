@@ -78,7 +78,7 @@ passport.deserializeUser(function(user, done) {
 passport.use(new FitbitStrategy({
   clientID: CLIENT_ID,
   clientSecret: CLIENT_SECRET,
-  callbackURL: "http://localhost:3000/auth/fitbit/callback"
+  callbackURL: "https://syncfitapp.herokuapp.com/auth/fitbit/callback"
 },
 function(accessToken, refreshToken, profile, done) {
   done(null, {
