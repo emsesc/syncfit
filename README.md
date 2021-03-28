@@ -82,3 +82,6 @@ I learn this from every project I complete, but **searching with the right keywo
 * Show progress of download
 * Add ability to directly download AND upload to other applications
 
+---
+
+Bootstrap Template credits to: bootstrapmade.com
