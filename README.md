@@ -37,7 +37,7 @@ Simply put, SyncFit exports ALL the TCX files (files with GPS, speed, and heart 
 
 ## 🔨 How I built it
 #### Main Tools
-* AWS s3 Buckets
+* AWS s3 Buckets and SDK
 * Express.JS
 * Heroku
 * Fitbit API/Oauth2
@@ -46,15 +46,39 @@ Simply put, SyncFit exports ALL the TCX files (files with GPS, speed, and heart 
 The frontend is **Bootstrap with HTML/CSS**, and built with the **Express** (NodeJS) framework. I used EJS to render the HTML and the user is authenticated with **Fitbit Oauth2** with the help of the `passport` module.
 
 #### Behind the scenes...
-The web app calls the **Fitbit API** two times: one to get all the activities and their TCX links, and another time to query for all the TCX file contents. It then uploads each of the TCX files to **an AWS s3 Bucket**. Once they were all uploaded, the application zips them all up and lets the user download it.
+The web app calls the **Fitbit API** two times with the `accessToken` from authentication: one to get all the activities and their TCX links, and another time to query for all the TCX file contents. It then uploads each of the TCX files to **an AWS s3 Bucket**. Once they were all uploaded, the application zips them all up and lets the user download it.
 
-## Challenges we ran into
+## 🥅 Challenges I ran into
 #### 1. **The Fitbit API** restricts 150 requests per hour for each user account
 I only had one account to test with (mine), so I had to be careful with how many times I called the API within one hour of testing.
 
-## Accomplishments that we're proud of
+#### 2. How do I know when the files are done uploading?
+The uploading process to an s3 bucket is not the quickest thing ever, and there is no response returned from the SDK that lets me know everything was complete. I had to improvise and upload a file named `complete.txt` to indicate when upload was complete.
 
-## What we learned
+## 🎉 Accomplishments that I'm proud of
+#### Finishing on time
+At first, everything seemed **overwhelming** (especially the AWS dashboard), but I was able to complete most of my desired features on time.
 
-## What's next for SyncFit
+#### Functionality
+Surprise! **I was actually able to use the application I made for my own benefit,** and it definitely saved me a lot of time. (Remember, the other option was clicking buttons over and over again for hours).
+
+## 📚 What I learned
+#### Google. Google. Google.
+I learn this from every project I complete, but **searching with the right keywords and finding the right documentation** is *crucial* to your success. Once I found the right StackOverflow post, I was good to go!
+
+#### Express.JS, Buckets, and Oauth2
+* **Express.JS** was new to me, and I was surprised by the great documentation there was available (definitely helped a ton). The **routing concepts** were an awesome introduction to future frameworks that I'll look into, and using EJS rendering was something I learned as well.
+* **Buckets**, a part of AWS s3, were a way to store files in the cloud I hadn't tried before. **Serverless solutions** are great!!
+* **Oauth2** is always daunting for me, and since not many developers use Fitbit Oauth, I didn't expect to do well. However, I was able to figure it out, and **now am more confident in how authentication works** - callbacks, redirects, all that nonsense.
+
+## 📝 What's next for SyncFit
+#### Fixes
+* Auth still needs work
+* UI could be more clear
+* Need to add functionality to remove the created zip file
+
+#### Features?
+* Visualize activity data!
+* Show progress of download
+* Add ability to directly download AND upload to other applications
 
