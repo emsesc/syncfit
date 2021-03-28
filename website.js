@@ -40,7 +40,19 @@ router.get('/getstarted', function(req, res){
   console.log("Requesting...")
   res.render('download', {
     welcomeText: userInfo.profile.displayName,
-    avatar: userInfo.profile._json.user.avatar
+    avatar: userInfo.profile._json.user.avatar640,
+    link: "http://localhost:3000/startdownload",
+    btnText: "Start Download"
+  })
+});
+
+router.get('/checkstatus', function(req, res){
+  console.log("Time to download!...")
+  res.render('download', {
+    welcomeText: userInfo.profile.displayName,
+    avatar: "https://i.pinimg.com/originals/6b/67/cb/6b67cb8a166c0571c1290f205c513321.gif",
+    link: "http://localhost:3000/downloadnow",
+    btnText: "Check Status and Download!"
   })
 });
 
@@ -100,9 +112,9 @@ app.get('/logout', function(req, res){
 });
 
 app.get('/startdownload', async (req, res) => {
-  res.redirect('/getstarted')
   let links = await functions.getFiles(userInfo.accessToken)
-  let status = await functions.downAndUp(links, userInfo.accessToken)
+  await functions.downAndUp(links, userInfo.accessToken)
+  res.redirect('/uploadstatus')
 })
 
 app.get('/downloadnow', async (req, res) => {
@@ -124,11 +136,13 @@ app.get('/downloadnow', async (req, res) => {
     output.on('finish', function() {
       res.download(__dirname + `/${userInfo.profile.displayName}-tcx-data.zip`)
     });
-    // wait till file is done 
+    // wait till file is done appending from s3Zip
   } else {
     res.render('download', {
       welcomeText: `${userInfo.profile.displayName}, download is not ready`,
-      avatar: userInfo.profile._json.user.avatar
+      avatar: "https://i.pinimg.com/originals/6b/67/cb/6b67cb8a166c0571c1290f205c513321.gif",
+      link: "http://localhost:3000/downloadnow",
+      btnText: "Check Status and Download!"
     })
   }
 })

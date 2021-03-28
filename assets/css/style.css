@@ -27,6 +27,10 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Poppins", sans-serif;
 }
 
+img {
+  border-radius: 50%;
+}
+
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
@@ -453,6 +457,10 @@ h1, h2, h3, h4, h5, h6 {
   animation: up-down 2s ease-in-out infinite alternate-reverse both;
 }
 
+img {
+  border-radius: 50%;
+}
+
 @media (min-width: 1200px) {
   #hero {
     background-attachment: fixed;
@@ -475,6 +483,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   #hero .hero-img img {
     width: 50%;
+    border-radius: 50%;
   }
 }
 
